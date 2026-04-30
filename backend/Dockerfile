@@ -1,7 +1,10 @@
 # Use the official Bun image
-FROM oven/bun:1 AS base
-WORKDIR /usr/src/app
 
+FROM oven/bun:1 AS base
+
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /usr/src/app
 # ==========================================
 # STAGE 1: Install Dependencies
 # ==========================================
