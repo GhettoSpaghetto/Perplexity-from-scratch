@@ -7,6 +7,7 @@ import cors from 'cors';
 import { PROMPT_TEMPLATE, SYSTEM_PROMPT } from './prompt';
 import { middleware } from './middleware';
 import { prisma } from './db';
+import type { Message } from './generated/prisma/client';
 
 declare module "express-serve-static-core" {
     interface Request {
@@ -159,7 +160,7 @@ app.post('/perplexity_ask/follow_up', middleware, async (req, res) => {
 
   // Build prompt with prior conversation context
   const history = conversation.messages
-    .map((m) => `${m.role}: ${m.content}`)
+    .map((m: Message) => `${m.role}: ${m.content}`)
     .join('\n\n');
 
   const prompt = `Previous conversation:\n${history}\n\n` +

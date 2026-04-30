@@ -27,7 +27,7 @@ export const Sidebar = ({ onSelectConversation, isOpen, setIsOpen }: SidebarProp
 
       try {
         const res = await fetch('http://localhost:3001/conversations', {
-          headers: { 'Authorization': `Bearer ${session.access_token}` }
+          headers: { 'Authorization': session.access_token }
         });
         const data = await res.json();
         setConversations(data.conversations || []);
