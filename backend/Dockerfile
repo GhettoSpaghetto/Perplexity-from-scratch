@@ -31,14 +31,22 @@ RUN bunx prisma generate
 # ==========================================
 # STAGE 3: Final Production Image
 # ==========================================
+# ==========================================
+# STAGE 3: Final Production Image
+# ==========================================
 FROM base AS release
-# Copy the lean production dependencies
-COPY --from=install /temp/prod/node_modules node_modules
-# Copy all your app files and the generated Prisma client from the prerelease stage
-COPY --from=prerelease /usr/src/app/ ./
 
-# Run the app securely as the 'bun' user
-USER bun
+# Create a custom user within Choreo's required range (10000-20000)
+RUN useradd --uid 10014 choreouser
+
+# Copy dependencies and change ownership so the new user can read them
+COPY --from=install --chown=10014:10014 /temp/prod/node_modules node_modules
+
+# Copy app files and generated Prisma client, changing ownership
+COPY --from=prerelease --chown=10014:10014 /usr/src/app/ ./
+
+# Switch to the Choreo-approved User ID
+USER 10014
 
 # Open the port your Express server uses
 EXPOSE 3001/tcp
