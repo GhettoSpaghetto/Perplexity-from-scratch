@@ -68,7 +68,7 @@ const Dashboard = () => {
   };
 
   const handleSelectConversation = (id: string) => {
-    console.log("Selected conversation:", id);
+    
     setIsSidebarOpen(false);
   };
 
