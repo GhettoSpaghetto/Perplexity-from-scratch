@@ -1,4 +1,4 @@
-app = "Perplexity-From-Scratch"
+app = "perplexity-from-scratch"
 primary_region = "bom"
 
 [build]
