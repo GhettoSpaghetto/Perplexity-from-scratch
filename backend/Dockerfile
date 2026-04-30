@@ -19,18 +19,21 @@ RUN cd /temp/prod && bun install --frozen-lockfile --production
 # ==========================================
 # STAGE 2: Build & Generate (Prisma)
 # ==========================================
+
 FROM base AS prerelease
 # Copy dev dependencies so we have the Prisma CLI
 COPY --from=install /temp/dev/node_modules node_modules
-# Copy all your backend files (index.ts, db.ts, prisma folder, etc.)
+# Copy all your backend files
 COPY . .
+
+# ADD THESE TWO LINES: Dummy URLs to satisfy Prisma during the build phase
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
+ENV DIRECT_URL="postgresql://dummy:dummy@localhost:5432/dummy"
 
 # Generate the Prisma Client specifically for this Linux container
 RUN bunx prisma generate
 
-# ==========================================
-# STAGE 3: Final Production Image
-# ==========================================
+
 # ==========================================
 # STAGE 3: Final Production Image
 # ==========================================
